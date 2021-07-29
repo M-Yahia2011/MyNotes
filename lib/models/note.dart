@@ -1,7 +1,33 @@
+import 'dart:convert';
+
 class Note {
-  int? id;
-  String? title;
-  String? text;
-  DateTime? creationDate = DateTime.now();
-  Note(this.id, this.text, this.title);
+    Note({
+        this.id,
+        this.title,
+        this.note,
+        this.date,
+    });
+
+    int? id;
+    String? title;
+    String? note;
+    String? date;
+
+    factory Note.fromRawJson(String str) => Note.fromMap(json.decode(str));
+
+    String toRawMap() => json.encode(toMap());
+
+    factory Note.fromMap(Map<String, dynamic> json) => Note(
+        id: json["id"],
+        title: json["title"],
+        note: json["note"],
+        date: json["date"],
+    );
+
+    Map<String, dynamic> toMap() => {
+        "id": id,
+        "title": title,
+        "note": note,
+        "date": date,
+    };
 }
