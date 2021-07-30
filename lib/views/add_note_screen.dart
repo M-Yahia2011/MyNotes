@@ -47,8 +47,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         centerTitle: true,
         leading: IconButton(
             onPressed: () async {
-              if (_titleTextController.text.isEmpty) {
-                return;
+              if (_titleTextController.text.isEmpty && _noteTextController.text.isEmpty) {
+                Navigator.of(context).pop();
+              }
+              if (_titleTextController.text.isEmpty && _noteTextController.text.isNotEmpty) {
+                _titleTextController.text = "No Title";
               }
               await insert();
               Navigator.of(context).pop();
@@ -64,7 +67,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 child: TextField(
                   controller: _titleTextController,
                   autofocus: true,
-                  style: TextStyle(fontSize: 22, height: 1),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20, height: 1),
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
                     hintText: "Title",
@@ -87,7 +91,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               Expanded(
                 child: TextField(
                   controller: _noteTextController,
-                  style: TextStyle(fontSize: 22, height: 1),
+                  style: TextStyle(fontSize: 20, height: 1),
                   cursorColor: Colors.black,
                   showCursor: true,
                   keyboardType: TextInputType.text,

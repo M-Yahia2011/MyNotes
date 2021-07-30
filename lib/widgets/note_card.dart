@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/models/note.dart';
-import 'package:my_notes/providers/note_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart' as intl;
 import '../views/note_screen.dart';
 
