@@ -1,3 +1,3 @@
 # MyNotes
 
-A flutter clone of ColorNote app
+A flutter semi-clone of the ColorNote app
