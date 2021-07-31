@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:move_to_background/move_to_background.dart';
+import 'package:my_notes/helpers/search_notes.dart';
 import 'package:my_notes/providers/note_provider.dart';
 import 'package:my_notes/views/add_note_screen.dart';
 import 'package:my_notes/widgets/note_card.dart';
@@ -50,7 +51,7 @@ class _HomeState extends State<Home> {
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.only(top: 2.0),
             child: FutureBuilder(
                 future: _future,
                 builder: (ctx, snapshot) {
@@ -131,7 +132,7 @@ class BottomBarActions extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.note))),
+        Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.list))),
         Expanded(
             child: IconButton(
                 onPressed: () {},
@@ -140,7 +141,16 @@ class BottomBarActions extends StatelessWidget {
                   semanticLabel: 'Calender',
                 ))),
         SizedBox(width: 50),
-        Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.search))),
+        Expanded(
+            child: IconButton(
+                onPressed: () async{
+                 await showSearch(
+                      context: context,
+                      delegate: SearchNotes(
+                          Provider.of<NoteProvider>(context, listen: false)
+                              .notes));
+                },
+                icon: Icon(Icons.search))),
         Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.list))),
       ],
     );
