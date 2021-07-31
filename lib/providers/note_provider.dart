@@ -42,10 +42,9 @@ class NoteProvider with ChangeNotifier {
     }
   }
 
-  /// update some note
   Future<void> updateNote(Map<String, dynamic> noteMap) async {
     try {
-      
+
       await database.updateNote(noteMap);
 
       Note newNote = Note.fromMap(noteMap);

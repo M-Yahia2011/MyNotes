@@ -11,11 +11,12 @@ class NoteScreen extends StatefulWidget {
   _AddNoteScreenState createState() => _AddNoteScreenState();
 }
 
+  enum selection{delete, share}
 class _AddNoteScreenState extends State<NoteScreen> {
   final _titleTextController = TextEditingController();
   final _noteTextController = TextEditingController();
-  String oldTitle = '';
-  String oldNote = '';
+  String? oldTitle;
+  String? oldNote;
   Future<void> update(int id) async {
     Map<String, dynamic> noteMap = {
       "id": id,
@@ -53,6 +54,34 @@ class _AddNoteScreenState extends State<NoteScreen> {
       appBar: AppBar(
         title: Text("MyNotes"),
         centerTitle: true,
+        actions: [
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            onSelected: (value) async {
+              switch (value) {
+                case selection.delete:
+                  Navigator.of(context).pop();
+                  await Provider.of<NoteProvider>(context, listen: false)
+                      .deleteNote(note.id!);
+                  break;
+                case 'share':
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  child: Text("Delete"),
+                  value: selection.delete,
+                ),
+                PopupMenuItem(
+                  child: Text("Share"),
+                  value: selection.share,
+                ),
+              ];
+            },
+          )
+        ],
         leading: IconButton(
             onPressed: () async {
               if (checkInput() == true) {
