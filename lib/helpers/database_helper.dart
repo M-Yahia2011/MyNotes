@@ -22,7 +22,7 @@ class DBHelper {
     return await openDatabase(path.join(dbPath, 'notes.db'),
         version: 1, onOpen: (_) {}, onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE Notes (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, note TEXT, date TEXT)');
+          'CREATE TABLE Notes (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, note TEXT, date TEXT, favorite INTEGER)');
     });
   }
 
@@ -48,9 +48,11 @@ class DBHelper {
       final db = await getDatabase;
       var res = await db.query("Notes");
       print(res);
-      List<Note> list =
-          res.isNotEmpty ? res.map((note) => Note.fromMap(note)).toList() : [];
-      print('GET ALL NOTES FORM DB $list');
+      List<Note> list = [];
+      if (res.isNotEmpty) {
+        print(res);
+        list = res.map((note) => Note.fromMap(note)).toList();
+      }
       return list;
     } catch (error) {
       throw error;
@@ -64,12 +66,13 @@ class DBHelper {
 
   Future<void> updateNote(Map<String, dynamic> noteMap) async {
     final db = await getDatabase;
-    db.update('Notes', noteMap, where: "id = ?", whereArgs: [noteMap['id']]);
+    int x = await db
+        .update('Notes', noteMap, where: "id = ?", whereArgs: [noteMap['id']]);
+    print(x);
   }
 
-  Future<void> clearDatabae() async {
+  Future<void> clearDatabase() async {
     final db = await getDatabase;
     db.execute("DELETE FROM Notes");
-
   }
 }

@@ -13,12 +13,14 @@ class AddNoteScreen extends StatefulWidget {
 class _AddNoteScreenState extends State<AddNoteScreen> {
   final _titleTextController = TextEditingController();
   final _noteTextController = TextEditingController();
-  late FocusNode myFocusNode;
+  late FocusNode _titleFocusNode;
+  late FocusNode _noteFocusNode;
   Future<void> insert() async {
     Map<String, dynamic> noteMap = {
       "title": _titleTextController.text,
       "note": _noteTextController.text,
-      "date": DateTime.now().toIso8601String()
+      "date": DateTime.now().toIso8601String(),
+      "favorite": 0,
     };
 
     await Provider.of<NoteProvider>(context, listen: false).addNote(noteMap);
@@ -28,13 +30,16 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   void initState() {
     super.initState();
 
-    myFocusNode = FocusNode();
+    _titleFocusNode = FocusNode();
+    _noteFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed.
-    myFocusNode.dispose();
+
+    _titleFocusNode.dispose();
+    _noteFocusNode.dispose();
 
     super.dispose();
   }
@@ -47,11 +52,15 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         centerTitle: true,
         leading: IconButton(
             onPressed: () async {
-              if (_titleTextController.text.isEmpty && _noteTextController.text.isEmpty) {
+              if (_titleTextController.text.isEmpty &&
+                  _noteTextController.text.isEmpty) {
                 Navigator.of(context).pop();
-              }
-              if (_titleTextController.text.isEmpty && _noteTextController.text.isNotEmpty) {
+              } else if (_titleTextController.text.isEmpty &&
+                  _noteTextController.text.isNotEmpty) {
                 _titleTextController.text = "No Title";
+              } else if (_titleTextController.text.isNotEmpty &&
+                  _noteTextController.text.isEmpty) {
+                _noteTextController.text = "";
               }
               await insert();
               Navigator.of(context).pop();
@@ -67,6 +76,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 child: TextField(
                   controller: _titleTextController,
                   autofocus: true,
+                  focusNode: _titleFocusNode,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () {
+                    _titleFocusNode.unfocus();
+                    FocusScope.of(context).requestFocus(_noteFocusNode);
+                  },
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 20, height: 1),
                   cursorColor: Colors.black,
@@ -91,6 +106,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               Expanded(
                 child: TextField(
                   controller: _noteTextController,
+                  focusNode: _noteFocusNode,
+                  textInputAction: TextInputAction.done,
+                  onEditingComplete: () => _noteFocusNode.unfocus(),
                   style: TextStyle(fontSize: 20, height: 1),
                   cursorColor: Colors.black,
                   showCursor: true,

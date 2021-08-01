@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_notes/widgets/note_card.dart';
 
@@ -24,7 +26,8 @@ class SearchNotes extends SearchDelegate {
         onPressed: () {
           close(context, query);
         },
-        icon: Icon(Icons.arrow_back_ios));
+        icon:
+            Icon(Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios));
   }
 
   @override

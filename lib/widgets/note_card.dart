@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_notes/models/note.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:my_notes/providers/note_provider.dart';
+import 'package:provider/provider.dart';
 import '../views/note_screen.dart';
 
 class NoteCard extends StatelessWidget {
@@ -21,24 +23,28 @@ class NoteCard extends StatelessWidget {
         child: Container(
           height: 120,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FittedBox(
-                  child: Text(
-                    note.title!,
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FittedBox(
+                      child: Text(
+                        note.title!,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                    FavoriteButton(note: note)
+                  ],
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                FittedBox(
-                  child: Text(
-                    note.note!,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
+                Text(
+                  note.note!,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 Expanded(
                   child: Row(
@@ -61,5 +67,40 @@ class NoteCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class FavoriteButton extends StatefulWidget {
+  const FavoriteButton({
+    Key? key,
+    required this.note,
+  }) : super(key: key);
+
+  final Note note;
+
+  @override
+  _FavoriteButtonState createState() => _FavoriteButtonState();
+}
+
+class _FavoriteButtonState extends State<FavoriteButton> {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () async {
+          await Provider.of<NoteProvider>(context, listen: false)
+              .toggleFavorite(widget.note.id);
+          setState(() {});
+        },
+        icon: widget.note.favorite == 1
+            ? Icon(
+                Icons.favorite,
+                color: Colors.pink[300],
+                size: 32,
+              )
+            : Icon(
+                Icons.favorite_border_outlined,
+                color: Colors.pink[300],
+                size: 32,
+              ));
   }
 }

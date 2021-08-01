@@ -11,7 +11,8 @@ class NoteScreen extends StatefulWidget {
   _AddNoteScreenState createState() => _AddNoteScreenState();
 }
 
-  enum selection{delete, share}
+enum selection { delete, share }
+
 class _AddNoteScreenState extends State<NoteScreen> {
   final _titleTextController = TextEditingController();
   final _noteTextController = TextEditingController();
@@ -102,6 +103,8 @@ class _AddNoteScreenState extends State<NoteScreen> {
                 child: TextField(
                   controller: _titleTextController,
                   style: TextStyle(fontSize: 22, height: 1),
+                  keyboardType: TextInputType.text,
+                  onEditingComplete: () => TextInputAction.next,
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
                     hintStyle: TextStyle(fontSize: 18),
@@ -112,7 +115,6 @@ class _AddNoteScreenState extends State<NoteScreen> {
                     disabledBorder: InputBorder.none,
                     contentPadding: EdgeInsets.all(15),
                   ),
-                  keyboardType: TextInputType.text,
                 ),
               ),
               Divider(
