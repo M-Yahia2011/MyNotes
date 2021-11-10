@@ -8,7 +8,7 @@ class Note {
       required this.date,
       required this.favorite});
 
-  String id;
+  int id;
   String? title;
   String? note;
   String? date;

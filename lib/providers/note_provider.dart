@@ -21,7 +21,7 @@ class NoteProvider with ChangeNotifier {
 
   Future<void> addNote(Map<String, dynamic> noteMap) async {
     try {
-      final String noteID = await database.insert(noteMap);
+      final int noteID = await database.insert(noteMap);
       noteMap["id"] = noteID;
       Note newNote = Note.fromMap(noteMap);
       _notes.add(newNote);
