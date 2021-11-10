@@ -21,9 +21,9 @@ class NoteProvider with ChangeNotifier {
 
   Future<void> addNote(Map<String, dynamic> noteMap) async {
     try {
-      final noteID = await database.insert(noteMap);
+      final String noteID = await database.insert(noteMap);
+      noteMap["id"] = noteID;
       Note newNote = Note.fromMap(noteMap);
-      newNote.id = noteID.toString();
       _notes.add(newNote);
       notifyListeners();
     } catch (error) {
@@ -56,9 +56,9 @@ class NoteProvider with ChangeNotifier {
 
   Future<void> clearNotes() async {
     await database.clearDatabase();
-    
+
     _notes.clear();
-    
+
     notifyListeners();
   }
 
@@ -67,7 +67,7 @@ class NoteProvider with ChangeNotifier {
     final oldPreference = note.favorite;
     try {
       note.favorite == 1 ? note.favorite = 0 : note.favorite = 1;
-  
+
       await database.updateNote(note.toMap());
       notifyListeners();
     } catch (error) {

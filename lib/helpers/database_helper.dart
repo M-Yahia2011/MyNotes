@@ -9,7 +9,7 @@ class DBHelper {
   static Database? _database;
 
   Future<Database> get getDatabase async {
-    // if (_database != null) return _database!;
+    if (_database != null) return _database!;
 
     // if _database is null we instantiate it
     _database = await _initDB();
@@ -21,16 +21,16 @@ class DBHelper {
     return await openDatabase(path.join(dbPath, 'notes.db'),
         version: 1, onOpen: (_) {}, onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE Notes (id TEXT PRIMARY KEY AUTOINCREMENT, title TEXT, note TEXT, date TEXT, favorite INTEGER)');
+          'CREATE TABLE Notes (id TEXT PRIMARY KEY, title TEXT, note TEXT, date TEXT, favorite INTEGER)');
     });
   }
 
-  Future<int> insert(Map<String, dynamic> noteMap) async {
+  Future<String> insert(Map<String, dynamic> noteMap) async {
     try {
       final db = await getDatabase;
-      final int noteID = await db.insert("Notes", noteMap,
+      final noteID = await db.insert("Notes", noteMap,
           conflictAlgorithm: ConflictAlgorithm.replace);
-      return noteID;
+      return noteID.toString();
     } catch (error) {
       throw error;
     }

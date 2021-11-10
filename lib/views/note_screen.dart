@@ -66,7 +66,7 @@ class _AddNoteScreenState extends State<NoteScreen> {
                 case selection.delete:
                   Navigator.of(context).pop();
                   await Provider.of<NoteProvider>(context, listen: false)
-                      .deleteNote(note.id!);
+                      .deleteNote(note.id);
                   break;
                 case 'share':
                   break;
@@ -89,7 +89,7 @@ class _AddNoteScreenState extends State<NoteScreen> {
         leading: IconButton(
             onPressed: () async {
               if (checkInput() == true) {
-                await update(note.id!);
+                await update(note.id);
                 Navigator.of(context).pop();
               } else {
                 Navigator.of(context).pop();
@@ -131,7 +131,8 @@ class _AddNoteScreenState extends State<NoteScreen> {
                   style: TextStyle(fontSize: 22, height: 1),
                   cursorColor: Colors.black,
                   showCursor: true,
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
                   decoration: new InputDecoration(
                     fillColor: Colors.amber[100],
                     border: InputBorder.none,

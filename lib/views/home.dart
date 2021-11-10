@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:move_to_background/move_to_background.dart';
+import 'dart:io';
 import 'package:my_notes/helpers/search_notes.dart';
 import 'package:my_notes/providers/note_provider.dart';
 import 'package:my_notes/views/add_note_screen.dart';
@@ -25,7 +23,6 @@ class _HomeState extends State<Home> {
     try {
       await Provider.of<NoteProvider>(context, listen: false).fetchDBNotes();
     } catch (error) {
-      
       throw error;
     }
   }
@@ -39,7 +36,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Provider.of<NoteProvider>(context);
-  
+
     double screenWidth = MediaQuery.of(context).size.width;
 
     final body = SafeArea(
@@ -101,7 +98,6 @@ class _HomeState extends State<Home> {
     );
     return WillPopScope(
       onWillPop: () async {
-        MoveToBackground.moveTaskToBack();
         return false;
       },
       child: Platform.isIOS
@@ -113,7 +109,7 @@ class _HomeState extends State<Home> {
                 elevation: 1,
                 title: FittedBox(
                   child: Text(
-                    "My Notes",
+                    "MyNotes",
                   ),
                 ),
                 centerTitle: true,
