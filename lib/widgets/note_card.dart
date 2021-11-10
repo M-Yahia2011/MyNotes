@@ -11,8 +11,9 @@ class NoteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+ 
     return Card(
-      elevation: 4,
+      elevation: 0,
       margin: EdgeInsets.symmetric(vertical: 5),
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       color: Colors.orange[100],
@@ -93,12 +94,12 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         },
         icon: widget.note.favorite == 1
             ? Icon(
-                Icons.favorite,
+                Icons.star_rounded,
                 color: Colors.pink[300],
                 size: 32,
               )
             : Icon(
-                Icons.favorite_border_outlined,
+                Icons.star_border_rounded,
                 color: Colors.pink[300],
                 size: 32,
               ));

@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
     try {
       await Provider.of<NoteProvider>(context, listen: false).fetchDBNotes();
     } catch (error) {
+      
       throw error;
     }
   }
@@ -38,7 +39,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Provider.of<NoteProvider>(context);
-    print('built');
+  
     double screenWidth = MediaQuery.of(context).size.width;
 
     final body = SafeArea(
@@ -104,16 +105,12 @@ class _HomeState extends State<Home> {
         return false;
       },
       child: Platform.isIOS
-          ? CupertinoApp(
-              builder: (ctx, _) {
-                return body;
-              },
-              debugShowCheckedModeBanner: false,
-              title: 'MyNotes',
+          ? CupertinoPageScaffold(
+              child: body,
             )
           : Scaffold(
               appBar: AppBar(
-                elevation: 4,
+                elevation: 1,
                 title: FittedBox(
                   child: Text(
                     "My Notes",
@@ -177,7 +174,6 @@ class BottomBarActions extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.list))),
         Expanded(
             child: IconButton(
                 onPressed: () {
@@ -185,7 +181,7 @@ class BottomBarActions extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.favorite,
-                  color: Colors.redAccent,
+                  color: Colors.pinkAccent,
                   semanticLabel: 'favorite',
                 ))),
         SizedBox(width: 50),
@@ -199,7 +195,6 @@ class BottomBarActions extends StatelessWidget {
                               .notes));
                 },
                 icon: Icon(Icons.search))),
-        Expanded(child: IconButton(onPressed: () {}, icon: Icon(Icons.list))),
       ],
     );
   }

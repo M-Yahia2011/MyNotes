@@ -18,11 +18,13 @@ class _AddNoteScreenState extends State<NoteScreen> {
   final _noteTextController = TextEditingController();
   String? oldTitle;
   String? oldNote;
-  Future<void> update(int id) async {
+  int? _favourite;
+  Future<void> update(String id) async {
     Map<String, dynamic> noteMap = {
       "id": id,
       "title": _titleTextController.text,
       "note": _noteTextController.text,
+      "favorite": _favourite,
       "date": DateTime.now().toIso8601String()
     };
 
@@ -46,9 +48,10 @@ class _AddNoteScreenState extends State<NoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Note note = ModalRoute.of(context)!.settings.arguments as Note;
+    final Note note = ModalRoute.of(context)!.settings.arguments as Note;
     _titleTextController.text = note.title!;
     _noteTextController.text = note.note!;
+    _favourite = note.favorite;
     oldTitle = note.title!;
     oldNote = note.note!;
     return Scaffold(

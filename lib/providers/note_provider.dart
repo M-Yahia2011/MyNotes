@@ -23,7 +23,7 @@ class NoteProvider with ChangeNotifier {
     try {
       final noteID = await database.insert(noteMap);
       Note newNote = Note.fromMap(noteMap);
-      newNote.id = noteID;
+      newNote.id = noteID.toString();
       _notes.add(newNote);
       notifyListeners();
     } catch (error) {
@@ -31,7 +31,7 @@ class NoteProvider with ChangeNotifier {
     }
   }
 
-  Future<void> deleteNote(int id) async {
+  Future<void> deleteNote(String id) async {
     try {
       await database.deleteNote(id);
       _notes.removeWhere((note) => note.id == id);
@@ -56,7 +56,9 @@ class NoteProvider with ChangeNotifier {
 
   Future<void> clearNotes() async {
     await database.clearDatabase();
+    
     _notes.clear();
+    
     notifyListeners();
   }
 
@@ -65,7 +67,7 @@ class NoteProvider with ChangeNotifier {
     final oldPreference = note.favorite;
     try {
       note.favorite == 1 ? note.favorite = 0 : note.favorite = 1;
-      print(note.toMap());
+  
       await database.updateNote(note.toMap());
       notifyListeners();
     } catch (error) {

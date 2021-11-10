@@ -9,7 +9,7 @@ class DBHelper {
   static Database? _database;
 
   Future<Database> get getDatabase async {
-    if (_database != null) return _database!;
+    // if (_database != null) return _database!;
 
     // if _database is null we instantiate it
     _database = await _initDB();
@@ -17,12 +17,11 @@ class DBHelper {
   }
 
   Future<Database> _initDB() async {
-    print("initDB");
     final dbPath = await getDatabasesPath();
     return await openDatabase(path.join(dbPath, 'notes.db'),
         version: 1, onOpen: (_) {}, onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE Notes (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, note TEXT, date TEXT, favorite INTEGER)');
+          'CREATE TABLE Notes (id TEXT PRIMARY KEY AUTOINCREMENT, title TEXT, note TEXT, date TEXT, favorite INTEGER)');
     });
   }
 
@@ -47,10 +46,9 @@ class DBHelper {
     try {
       final db = await getDatabase;
       var res = await db.query("Notes");
-      print(res);
+
       List<Note> list = [];
       if (res.isNotEmpty) {
-        print(res);
         list = res.map((note) => Note.fromMap(note)).toList();
       }
       return list;
@@ -59,7 +57,7 @@ class DBHelper {
     }
   }
 
-  Future<void> deleteNote(int id) async {
+  Future<void> deleteNote(String id) async {
     final db = await getDatabase;
     await db.delete("Notes", where: "id = ?", whereArgs: [id]);
   }
@@ -68,11 +66,11 @@ class DBHelper {
     final db = await getDatabase;
     int x = await db
         .update('Notes', noteMap, where: "id = ?", whereArgs: [noteMap['id']]);
-    print(x);
   }
 
   Future<void> clearDatabase() async {
     final db = await getDatabase;
+    // delete all rows but keep continue with the IDs flow as it is
     db.execute("DELETE FROM Notes");
   }
 }

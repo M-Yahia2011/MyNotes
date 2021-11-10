@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 class Note {
-  Note({
-    required this.id,
-    required this.title,
-    required this.note,
-    required this.date,
-    required this.favorite
-  });
+  Note(
+      {required this.id,
+      required this.title,
+      required this.note,
+      required this.date,
+      required this.favorite});
 
-  int? id;
+  String? id;
   String? title;
   String? note;
   String? date;
@@ -24,7 +23,7 @@ class Note {
         title: json["title"],
         note: json["note"],
         date: json["date"],
-        favorite:json["favorite"]
+        favorite: json["favorite"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -32,9 +31,8 @@ class Note {
         "title": title,
         "note": note,
         "date": date,
-        "favorite":favorite
+        "favorite": favorite
       };
-  
 
   @override
   String toString() {
